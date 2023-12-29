@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {RegisterRequestInterface} from "../types/registerRequest";
 import {map, Observable} from "rxjs";
-import {CurrentUserInterface} from "../../shared/types/currentUser";
+import {CurrentUserInterface} from "../../shared/types/currentUser.interface";
 import {AuthResponseInterface} from "../types/authResponse.interface";
 import {environment} from "../../../environments/environment";
 
