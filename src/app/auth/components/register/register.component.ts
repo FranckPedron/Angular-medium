@@ -5,7 +5,11 @@ import {Store} from "@ngrx/store";
 import {authActions} from "../../store/actions";
 import {RegisterRequestInterface} from "../../types/registerRequest";
 import {CommonModule} from "@angular/common";
-import {selectIsSubmitting} from "../../store/reducers";
+import {selectIsSubmitting, selectValidationErrors} from "../../store/reducers";
+import {combineLatest} from "rxjs";
+import {
+  BackendErrorMessagesComponent
+} from "../../../shared/components/backendErrorMessages/backendErrorMessages.component";
 
 
 @Component({
@@ -14,7 +18,8 @@ import {selectIsSubmitting} from "../../store/reducers";
   imports: [
     RouterLink,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    BackendErrorMessagesComponent
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -25,12 +30,17 @@ export class RegisterComponent {
     email: ['', Validators.required],
     password: ['', Validators.required]
   })
-  isSubmitting$ = this.store.select(selectIsSubmitting);
+
+  data$ = combineLatest({
+    isSubmitting: this.store.select(selectIsSubmitting),
+    backendErrors: this.store.select(selectValidationErrors)
+  })
 
   constructor(
     private fb: FormBuilder,
     private store: Store
-  ) { }
+  ) {
+  }
 
   onSubmit() {
     console.log('form', this.form.getRawValue());
